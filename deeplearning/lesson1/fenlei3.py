@@ -13,4 +13,4 @@ def RNN(X,weights,biases):
     X_in = tf.reshape(X_in,[-1,n_steps,n_hidden_units])
 
 
-    lstm
+    lstms
