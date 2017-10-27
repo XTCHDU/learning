@@ -60,7 +60,7 @@ b_conv1 = biases_variable([32])
 h_conv1 = tf.nn.relu(conv1d(x_image,W_conv1)+b_conv1)
 h_pool1 = max_pool_1x2(h_conv1)
 
-W_conv2 = weight_variable([1,2,32,64])
+W_conv2 = weight_variable([1,3,32,64])
 b_conv2 = biases_variable([64])
 h_conv2 = tf.nn.relu(conv1d(h_pool1,W_conv2)+b_conv2)
 h_pool2 = max_pool_1x2(h_conv2)
@@ -80,10 +80,10 @@ loss = tf.reduce_mean(-tf.reduce_sum(ys*tf.log(prediction)))
 train_step = tf.train.AdamOptimizer(1e-5).minimize(loss)
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
-
-
+saver = tf.train.Saver()
 for i in range(10000):
     sess.run(train_step, feed_dict={xs: x_data, ys: y_data, keep_prob:1.0})
+    saver.save(sess,'save/%dmodel_conv.ckpt'% SNR)
     if i % 50 == 0:
         print(sess.run(loss, feed_dict={xs: x_test, ys: y_test, keep_prob:1.0}))
         correct_prediction = tf.equal(tf.argmax(prediction, 1), tf.argmax(y_test, 1))
